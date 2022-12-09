@@ -1,0 +1,24 @@
+Entities
+
+- User
+- Stall
+
+
+Functionalities
+
+- search for bookstalls using placename ( district, locality )
+- seacrh books using name, publication
+- reserve book
+- auto reservation cancel
+- mail service
+- user creation, updatiom
+- stall creation
+- Adding book
+etc.
+
+
+Techs
+
+- Frontend : React ( Javascript, HTML5, CSS, Bootstrap )
+- Backend : SpringBoot ( Java )
+- Database : MySQL
