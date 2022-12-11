@@ -1,5 +1,6 @@
 package com.nssproject.bookease.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 @Entity
@@ -79,5 +80,15 @@ public class Book {
     }
 
     public Book() {
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookName='" + bookName + '\'' +
+                ", author='" + author + '\'' +
+                ", publication='" + publication + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
