@@ -9,12 +9,18 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+
     private String bookName;
+    @Column(nullable = false)
+
     private String author;
+    @Column(nullable = false)
+
     private String publication;
+    @Column(nullable = false)
+
     private Double price;
-    private Long reservedBy;
-    private Long reservedTime;
 
     public Book(String bookName, String author, String publication, Double price) {
         this.bookName = bookName;
@@ -62,23 +68,6 @@ public class Book {
     public void setPrice(Double price) {
         this.price = price;
     }
-
-    public Long getReservedBy() {
-        return reservedBy;
-    }
-
-    public void setReservedBy(Long reservedBy) {
-        this.reservedBy = reservedBy;
-    }
-
-    public Long getReservedTime() {
-        return reservedTime;
-    }
-
-    public void setReservedTime(Long reservedTime) {
-        this.reservedTime = reservedTime;
-    }
-
     public Book() {
     }
 
