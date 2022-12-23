@@ -3,6 +3,8 @@ package com.nssproject.bookease.entity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "Books")
 public class Book {
@@ -69,6 +71,19 @@ public class Book {
         this.price = price;
     }
     public Book() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(id, book.id) && Objects.equals(bookName, book.bookName) && Objects.equals(author, book.author) && Objects.equals(publication, book.publication) && Objects.equals(price, book.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, bookName, author, publication, price);
     }
 
     @Override

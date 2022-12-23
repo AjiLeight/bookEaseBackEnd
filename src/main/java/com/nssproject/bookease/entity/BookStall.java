@@ -2,6 +2,8 @@ package com.nssproject.bookease.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "book_stall")
 public class BookStall {
@@ -84,5 +86,31 @@ public class BookStall {
     }
 
     public BookStall() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BookStall bookStall = (BookStall) o;
+        return Objects.equals(id, bookStall.id) && Objects.equals(name, bookStall.name) && Objects.equals(address, bookStall.address) && Objects.equals(district, bookStall.district) && Objects.equals(city, bookStall.city) && Objects.equals(contact, bookStall.contact) && Objects.equals(password, bookStall.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, district, city, contact, password);
+    }
+
+    @Override
+    public String toString() {
+        return "BookStall{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", district='" + district + '\'' +
+                ", city='" + city + '\'' +
+                ", contact='" + contact + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
