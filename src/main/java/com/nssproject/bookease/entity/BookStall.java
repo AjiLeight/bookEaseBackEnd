@@ -23,10 +23,10 @@ public class BookStall {
     @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String contact;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
     public Long getId() {

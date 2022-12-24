@@ -4,13 +4,12 @@ import com.nssproject.bookease.entity.Book;
 import com.nssproject.bookease.service.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/book")
 public class BookController {
 
     private BookService bookService;
@@ -19,8 +18,19 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @PostMapping("/api/save-book")
+    @PostMapping("/save-book")
     public ResponseEntity<Book> saveBook(@RequestBody Book book){
         return new ResponseEntity<Book>(bookService.saveBook(book), HttpStatus.OK);
     }
+
+    @GetMapping("/search/name/{name}")
+    public ResponseEntity<List> listBookByName(@PathVariable String name){
+        return new ResponseEntity<>(bookService.listBookByName(name), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/stall-id/{stallId}")
+    public ResponseEntity<List> listBooksByStallName(@PathVariable Long stallId){
+        return new ResponseEntity<List>(bookService.listBookFromStock(stallId), HttpStatus.OK);
+    }
+
 }
