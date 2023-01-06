@@ -1,9 +1,11 @@
 package com.nssproject.bookease.entity;
 
 import com.nssproject.bookease.config.ReservationId;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "reservations")
@@ -55,5 +57,28 @@ public class Reservation {
     }
 
     public Reservation() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(bookId, that.bookId) && Objects.equals(stallId, that.stallId) && Objects.equals(userId, that.userId) && Objects.equals(date, that.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookId, stallId, userId, date);
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "bookId=" + bookId +
+                ", stallId=" + stallId +
+                ", userId=" + userId +
+                ", date=" + date +
+                '}';
     }
 }

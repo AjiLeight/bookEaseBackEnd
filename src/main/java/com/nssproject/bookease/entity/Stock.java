@@ -1,7 +1,10 @@
 package com.nssproject.bookease.entity;
 
 import com.nssproject.bookease.config.StockId;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
+
+import java.util.Objects;
 
 @Entity
 @Table(name = "stock")
@@ -43,5 +46,27 @@ public class Stock {
 
     public void setStock(long stock) {
         this.stock = stock;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stock stock1 = (Stock) o;
+        return bookId == stock1.bookId && stallId == stock1.stallId && stock == stock1.stock;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookId, stallId, stock);
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "bookId=" + bookId +
+                ", stallId=" + stallId +
+                ", stock=" + stock +
+                '}';
     }
 }

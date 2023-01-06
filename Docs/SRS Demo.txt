@@ -11,7 +11,7 @@ Functionalities
 - reserve book
 - auto reservation cancel
 - mail service
-- user creation, updatiom
+- customer creation, updatiom
 - stall creation
 - Adding book
 etc.
