@@ -1,7 +1,8 @@
 package com.nssproject.bookease.entity;
 
 import com.nssproject.bookease.config.ReservationId;
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 
 import java.util.Date;
 import java.util.Objects;

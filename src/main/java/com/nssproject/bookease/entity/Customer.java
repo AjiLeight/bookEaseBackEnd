@@ -1,12 +1,13 @@
 package com.nssproject.bookease.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
+
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "user_list")
-public class User {
+@Table(name = "customer")
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -24,8 +25,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(userId, user.userId) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        Customer customer = (Customer) o;
+        return Objects.equals(userId, customer.userId) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(password, customer.password);
     }
 
     @Override

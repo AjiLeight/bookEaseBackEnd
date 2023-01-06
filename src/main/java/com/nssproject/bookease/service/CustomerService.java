@@ -1,4 +1,4 @@
 package com.nssproject.bookease.service;
 
-public interface UserService {
+public interface CustomerService {
 }

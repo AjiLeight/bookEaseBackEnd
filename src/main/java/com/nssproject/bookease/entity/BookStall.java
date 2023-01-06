@@ -1,7 +1,7 @@
 package com.nssproject.bookease.entity;
 
-import jakarta.persistence.*;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
