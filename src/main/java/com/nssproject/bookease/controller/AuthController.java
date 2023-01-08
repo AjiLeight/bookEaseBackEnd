@@ -2,9 +2,14 @@ package com.nssproject.bookease.controller;
 
 import com.nssproject.bookease.dto.AuthResponseDto;
 import com.nssproject.bookease.dto.LoginDto;
-import com.nssproject.bookease.dto.RegisterDto;
+import com.nssproject.bookease.dto.RegisterStallDto;
+import com.nssproject.bookease.dto.RegisterUserDto;
+import com.nssproject.bookease.entity.BookStall;
+import com.nssproject.bookease.entity.Customer;
 import com.nssproject.bookease.entity.Role;
 import com.nssproject.bookease.entity.UserEntity;
+import com.nssproject.bookease.repository.BookStallRepository;
+import com.nssproject.bookease.repository.CustomerRepository;
 import com.nssproject.bookease.repository.RoleRepository;
 import com.nssproject.bookease.repository.UserRepository;
 import com.nssproject.bookease.security.JwtGenerator;
@@ -18,8 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Id;
-import java.util.Collection;
 import java.util.Collections;
 
 @RestController
@@ -31,35 +34,91 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtGenerator jwtGenerator;
+    private final CustomerRepository customerRepository;
+    private final BookStallRepository bookStallRepository;
 
     @Autowired
     public AuthController(UserRepository userRepository,
                           RoleRepository roleRepository,
                           PasswordEncoder passwordEncoder,
                           AuthenticationManager authenticationManager,
-                          JwtGenerator jwtGenerator) {
+                          JwtGenerator jwtGenerator,
+                          CustomerRepository customerRepository,
+                          BookStallRepository bookStallRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtGenerator = jwtGenerator;
+        this.customerRepository = customerRepository;
+        this.bookStallRepository = bookStallRepository;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto){
-        if(userRepository.existsByEmail(registerDto.getEmail())){
-            return new ResponseEntity<>("This Email is already in use", HttpStatus.BAD_REQUEST);
+    @PostMapping("/register-user")
+    public ResponseEntity<AuthResponseDto> registerUser(@RequestBody RegisterUserDto registerUserDto){
+        if(userRepository.existsByEmail(registerUserDto.getEmail())){
+            return new ResponseEntity<>(new AuthResponseDto("Email already in use"), HttpStatus.BAD_REQUEST);
         }
         UserEntity user = new UserEntity();
-        user.setEmail(registerDto.getEmail());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        user.setEmail(registerUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
 
-        Role role = roleRepository.findByName(registerDto.getRole()).get();
+        Role role = roleRepository.findByName("CUSTOMER").get();
         user.setRole(Collections.singletonList(role));
 
-        userRepository.save(user);
+        Customer customer = new Customer();
+        customer.setEmail(registerUserDto.getEmail());
+        customer.setName(registerUserDto.getName());
 
-        return new ResponseEntity<>("User Successfully Created", HttpStatus.OK);
+        userRepository.save(user);
+        customerRepository.save(customer);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        registerUserDto.getEmail(),
+                        registerUserDto.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generateToken(authentication);
+
+        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+    }
+
+    @PostMapping("/register-stall")
+    public ResponseEntity<AuthResponseDto> registerStall(@RequestBody RegisterStallDto registerStallDto){
+        if(userRepository.existsByEmail(registerStallDto.getEmail())){
+            return new ResponseEntity<>(new AuthResponseDto("Email already in use"), HttpStatus.BAD_REQUEST);
+        }
+        UserEntity user = new UserEntity();
+        user.setEmail(registerStallDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registerStallDto.getPassword()));
+
+        Role role = roleRepository.findByName("STALL").get();
+        user.setRole(Collections.singletonList(role));
+
+        BookStall bookStall = new BookStall();
+
+        bookStall.setEmail(registerStallDto.getEmail());
+        bookStall.setName(registerStallDto.getName());
+        bookStall.setCity(registerStallDto.getCity());
+        bookStall.setDistrict(registerStallDto.getDistrict());
+        bookStall.setContact(registerStallDto.getPhone());
+        bookStall.setAddress(registerStallDto.getAddress());
+
+        userRepository.save(user);
+        bookStallRepository.save(bookStall);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        registerStallDto.getEmail(),
+                        registerStallDto.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtGenerator.generateToken(authentication);
+
+        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
 
     @PostMapping("/login")
