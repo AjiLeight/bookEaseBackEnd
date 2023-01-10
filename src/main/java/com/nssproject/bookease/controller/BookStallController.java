@@ -1,13 +1,15 @@
 package com.nssproject.bookease.controller;
 
 
+import com.nssproject.bookease.dto.DistrictDto;
 import com.nssproject.bookease.entity.BookStall;
+import com.nssproject.bookease.entity.Stock;
+import com.nssproject.bookease.repository.StockRepository;
 import com.nssproject.bookease.service.BookStallService;
+import com.nssproject.bookease.service.StockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,13 +17,22 @@ import java.util.List;
 @RequestMapping("/api/v1/stall")
 public class BookStallController {
     private BookStallService bookStallService;
+    private  StockService stockService;
 
-    public BookStallController(BookStallService bookStallService) {
+    @Autowired
+    public BookStallController(BookStallService bookStallService,
+                               StockService stockService) {
         this.bookStallService = bookStallService;
+        this.stockService = stockService;
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<List<BookStall>> listBookStallByName(@PathVariable String name){
         return ResponseEntity.ok(bookStallService.getBookStallByName(name));
+    }
+
+    @PostMapping("/district")
+    public  ResponseEntity<List<BookStall>> listBookStallByDistrictAndBook(@RequestBody DistrictDto districtDto){
+        return ResponseEntity.ok(bookStallService.getStallByDistrictAndBook(districtDto.getBookId(),districtDto.getDistrict()));
     }
 }

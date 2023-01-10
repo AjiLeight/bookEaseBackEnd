@@ -5,5 +5,5 @@ import com.nssproject.bookease.entity.Stock;
 import java.util.List;
 
 public interface StockService {
-    List<Stock> listBookByStallId(Long id);
+    List<Stock> listBookByStallId(String email);
 }
