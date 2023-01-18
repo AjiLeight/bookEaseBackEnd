@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/stall")
+@CrossOrigin
 public class BookStallController {
     private BookStallService bookStallService;
     private  StockService stockService;

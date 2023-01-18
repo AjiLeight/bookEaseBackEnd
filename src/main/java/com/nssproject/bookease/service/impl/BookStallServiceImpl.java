@@ -47,7 +47,10 @@ public class BookStallServiceImpl implements BookStallService {
     public List<BookStall> getStallByDistrictAndBook(Long bookId, String district) {
         List<Stock> stocks =  stockRepository.findByBookId(bookId);
         List<String> stockIds = new ArrayList<>();
-        stocks.forEach(stock -> stockIds.add(stock.getStallEmail()));
+        stocks.forEach(stock -> {
+            if(stock.getStock()>0){
+            stockIds.add(stock.getStallEmail());}
+        });
         List<BookStall> bookStalls = new ArrayList<>();
         stockIds.forEach(stockId -> {
             BookStall bookStall = bookStallRepository.findByEmail(stockId);
