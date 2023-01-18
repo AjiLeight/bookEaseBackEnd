@@ -15,7 +15,8 @@ public class StockServiceImpl implements StockService {
     private StockRepository stockRepository;
 
     @Override
-    public List<Stock> listBookByStallId(Long id) {
-        return stockRepository.findByStallId(id);
+    public List<Stock> listBookByStallId(String id) {
+        return stockRepository.findByStallEmail(id);
     }
+
 }
