@@ -41,5 +41,10 @@ public class BookServiceImpl implements BookService {
         return bookList;
     }
 
+    @Override
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id).orElseThrow();
+    }
+
 
 }

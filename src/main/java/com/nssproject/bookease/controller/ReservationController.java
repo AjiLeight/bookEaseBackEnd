@@ -46,4 +46,10 @@ public class ReservationController {
         reservationService.deleteReservation(reservationDto);
         return ResponseEntity.ok("deleted successfully");
     }
+
+    @DeleteMapping("/complete")
+    public ResponseEntity<String> completeReservation(@RequestBody ReservationDto reservationDto){
+        reservationService.completeReservation(reservationDto);
+        return ResponseEntity.ok("deleted successfully");
+    }
 }

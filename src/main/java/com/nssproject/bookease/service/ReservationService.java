@@ -14,4 +14,5 @@ public interface ReservationService {
     List<Reservation> getReservationByUserEmail(String email);
 
     void deleteReservation(ReservationDto reservationDto);
+    void completeReservation(ReservationDto reservationDto);
 }

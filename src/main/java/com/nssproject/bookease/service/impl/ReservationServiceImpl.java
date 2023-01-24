@@ -46,4 +46,13 @@ public class ReservationServiceImpl implements ReservationService {
         stockService.increaseStock(reservationDto.getBookId(),reservationDto.getStallEmail(),1);
         reservationRepository.delete(reservation);
     }
+
+    @Override
+    public void completeReservation(ReservationDto reservationDto) {
+        Reservation reservation = reservationRepository.findByBookIdAndStallEmailAndUserEmail(
+                reservationDto.getBookId(),
+                reservationDto.getStallEmail(),
+                reservationDto.getUserEmail());
+        reservationRepository.delete(reservation);
+    }
 }
