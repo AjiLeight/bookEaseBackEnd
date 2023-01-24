@@ -42,8 +42,8 @@ public class ReservationController {
     }
 
     @DeleteMapping()
-    public ResponseEntity<String> deleteReservation(@RequestBody ReservationId reservationid){
-        reservationService.deleteReservation(reservationid);
+    public ResponseEntity<String> deleteReservation(@RequestBody ReservationDto reservationDto){
+        reservationService.deleteReservation(reservationDto);
         return ResponseEntity.ok("deleted successfully");
     }
 }

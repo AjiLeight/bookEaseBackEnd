@@ -2,6 +2,7 @@ package com.nssproject.bookease.service;
 
 import com.nssproject.bookease.config.ReservationId;
 import com.nssproject.bookease.dto.RegisterStallDto;
+import com.nssproject.bookease.dto.ReservationDto;
 import com.nssproject.bookease.entity.BookStall;
 import com.nssproject.bookease.entity.Reservation;
 
@@ -12,5 +13,5 @@ public interface ReservationService {
     List<Reservation> getReservationByStallEmail(String email);
     List<Reservation> getReservationByUserEmail(String email);
 
-    void deleteReservation(ReservationId id);
+    void deleteReservation(ReservationDto reservationDto);
 }
