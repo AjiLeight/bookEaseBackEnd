@@ -1,9 +1,12 @@
 package com.nssproject.bookease.service.impl;
 
 import com.nssproject.bookease.config.ReservationId;
+import com.nssproject.bookease.dto.ReservationDto;
 import com.nssproject.bookease.entity.Reservation;
+import com.nssproject.bookease.entity.Stock;
 import com.nssproject.bookease.repository.ReservationRepository;
 import com.nssproject.bookease.service.ReservationService;
+import com.nssproject.bookease.service.StockService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +19,11 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private StockService stockService;
     @Override
     public Reservation addReservation(Reservation reservation) {
+        stockService.decreaseStock(reservation.getBookId(),reservation.getStallEmail(),1);
         return reservationRepository.save(reservation);
     }
 
@@ -32,11 +38,12 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void deleteReservation(ReservationId reservationId) {
+    public void deleteReservation(ReservationDto reservationDto) {
         Reservation reservation = reservationRepository.findByBookIdAndStallEmailAndUserEmail(
-                reservationId.getBookId(),
-                reservationId.getStallEmail(),
-                reservationId.getUserEmail());
+                reservationDto.getBookId(),
+                reservationDto.getStallEmail(),
+                reservationDto.getUserEmail());
+        stockService.increaseStock(reservationDto.getBookId(),reservationDto.getStallEmail(),1);
         reservationRepository.delete(reservation);
     }
 }

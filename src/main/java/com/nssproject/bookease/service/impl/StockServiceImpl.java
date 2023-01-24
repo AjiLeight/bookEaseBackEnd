@@ -19,4 +19,19 @@ public class StockServiceImpl implements StockService {
         return stockRepository.findByStallEmail(id);
     }
 
+    @Override
+    public Stock increaseStock(Long bookId, String email, int amount) {
+        Stock stock = stockRepository.findByStallEmailAndBookId(email, bookId);
+        stock.setStock(stock.getStock()+amount);
+        return stockRepository.save(stock);
+    }
+
+    @Override
+    public Stock decreaseStock(Long bookId, String email, int amount) {
+        Stock stock = stockRepository.findByStallEmailAndBookId(email, bookId);
+        stock.setStock(stock.getStock()-amount);
+        return stockRepository.save(stock);
+    }
+
+
 }
