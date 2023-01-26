@@ -30,15 +30,20 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> listBookByName(String name) {
-        return bookRepository.findByBookNameContaining(name);
+        return bookRepository.findAllByBookNameContainingOrderByBookName(name);
     }
 
     @Override
     public List<Book> listBookFromStock(Long id) {
-        List<Stock> stock = stockRepository.findByBookId(id);
+        List<Stock> stock = stockRepository.findAllByBookId(id);
         List<Book> bookList = new ArrayList<>();
         stock.forEach(s -> {bookList.add(bookRepository.findById(s.getBookId()).orElseThrow());});
         return bookList;
+    }
+
+    @Override
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id).orElseThrow();
     }
 
 
