@@ -11,4 +11,5 @@ public interface BookService {
     List<Book> listBookByName(String string);
     List<Book> listBookFromStock(Long id);
     Book getBookById(Long id);
+
 }

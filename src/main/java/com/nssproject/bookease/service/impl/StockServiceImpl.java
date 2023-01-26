@@ -16,7 +16,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<Stock> listBookByStallId(String id) {
-        return stockRepository.findByStallEmail(id);
+        return stockRepository.findAllByStallEmail(id);
     }
 
     @Override
@@ -30,6 +30,24 @@ public class StockServiceImpl implements StockService {
     public Stock decreaseStock(Long bookId, String email, int amount) {
         Stock stock = stockRepository.findByStallEmailAndBookId(email, bookId);
         stock.setStock(stock.getStock()-amount);
+        return stockRepository.save(stock);
+    }
+
+    @Override
+    public Stock saveStock(Stock stock) {
+        return stockRepository.save(stock);
+    }
+
+    @Override
+    public void deleteStock(Long bookId, String stallEmail) {
+        Stock stock = stockRepository.findByStallEmailAndBookId(stallEmail, bookId);
+        stockRepository.delete(stock);
+    }
+
+    @Override
+    public Stock updateStock(Stock newStock) {
+        Stock stock = stockRepository.findByStallEmailAndBookId(newStock.getStallEmail(), newStock.getBookId());
+        stock.setStock(newStock.getStock());
         return stockRepository.save(stock);
     }
 

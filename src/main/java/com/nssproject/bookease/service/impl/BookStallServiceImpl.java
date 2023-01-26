@@ -35,7 +35,7 @@ public class BookStallServiceImpl implements BookStallService {
 
     @Override
     public List<BookStall> getStallByBook(Long bookId) {
-        List<Stock> stocks =  stockRepository.findByBookId(bookId);
+        List<Stock> stocks =  stockRepository.findAllByBookId(bookId);
         List<String> stockIds = new ArrayList<>();
         stocks.forEach(stock -> stockIds.add(stock.getStallEmail()));
         List<BookStall> bookStalls = new ArrayList<>();
@@ -45,7 +45,7 @@ public class BookStallServiceImpl implements BookStallService {
 
     @Override
     public List<BookStall> getStallByDistrictAndBook(Long bookId, String district) {
-        List<Stock> stocks =  stockRepository.findByBookId(bookId);
+        List<Stock> stocks =  stockRepository.findAllByBookId(bookId);
         List<String> stockIds = new ArrayList<>();
         stocks.forEach(stock -> {
             if(stock.getStock()>0){
