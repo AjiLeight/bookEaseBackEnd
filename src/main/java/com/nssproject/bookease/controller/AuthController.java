@@ -54,6 +54,8 @@ public class AuthController {
         this.bookStallRepository = bookStallRepository;
     }
 
+
+    //endpoint for user sign up - creates a user, validates a user and returns a token
     @PostMapping("/register-user")
     public ResponseEntity<AuthResponseDto> registerUser(@RequestBody RegisterUserDto registerUserDto){
         if(userRepository.existsByEmail(registerUserDto.getEmail())){
@@ -84,6 +86,9 @@ public class AuthController {
 
         return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
+
+
+    //endpoint for stall sign up - creates a stall, validates a stall and returns a token
 
     @PostMapping("/register-stall")
     public ResponseEntity<AuthResponseDto> registerStall(@RequestBody RegisterStallDto registerStallDto){
