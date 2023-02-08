@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/reservation")
+    @RequestMapping("/api/v1/reservation")
 public class ReservationController {
     @Autowired
     private final ReservationService reservationService;
