@@ -60,4 +60,9 @@ public class BookStallServiceImpl implements BookStallService {
         });
         return bookStalls;
     }
+
+    @Override
+    public BookStall getStallByEmail(String email) {
+        return bookStallRepository.findByEmail(email);
+    }
 }

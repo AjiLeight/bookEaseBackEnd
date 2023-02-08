@@ -8,6 +8,7 @@ import com.nssproject.bookease.repository.StockRepository;
 import com.nssproject.bookease.service.BookStallService;
 import com.nssproject.bookease.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +36,10 @@ public class BookStallController {
     @PostMapping("/district")
     public  ResponseEntity<List<BookStall>> listBookStallByDistrictAndBook(@RequestBody DistrictDto districtDto){
         return ResponseEntity.ok(bookStallService.getStallByDistrictAndBook(districtDto.getBookId(),districtDto.getDistrict()));
+    }
+
+    @GetMapping("{email}")
+    public ResponseEntity<BookStall> listBookByEmail(@PathVariable String email){
+        return new ResponseEntity<>(bookStallService.getStallByEmail(email), HttpStatus.OK);
     }
 }
