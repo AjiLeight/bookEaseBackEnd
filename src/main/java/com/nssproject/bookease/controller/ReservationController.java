@@ -2,7 +2,10 @@ package com.nssproject.bookease.controller;
 
 import com.nssproject.bookease.config.ReservationId;
 import com.nssproject.bookease.dto.ReservationDto;
+import com.nssproject.bookease.entity.EmailDetails;
 import com.nssproject.bookease.entity.Reservation;
+import com.nssproject.bookease.service.BookService;
+import com.nssproject.bookease.service.EmailService;
 import com.nssproject.bookease.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +19,16 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequiredArgsConstructor
-    @RequestMapping("/api/v1/reservation")
+@RequestMapping("/api/v1/reservation")
 public class ReservationController {
     @Autowired
     private final ReservationService reservationService;
 
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private BookService bookService;
     @PostMapping
     public Reservation addReservation(@RequestBody ReservationDto reservationDto){
         Reservation reservation = new Reservation();
@@ -50,6 +58,16 @@ public class ReservationController {
     @DeleteMapping("/complete")
     public ResponseEntity<String> completeReservation(@RequestBody ReservationDto reservationDto){
         reservationService.completeReservation(reservationDto);
-        return ResponseEntity.ok("deleted successfully");
+
+        String bookName = bookService.getBookById(reservationDto.getBookId()).getBookName();
+
+        EmailDetails emailDetails = new EmailDetails();
+
+        emailDetails.setRecipient(reservationDto.getUserEmail());
+        emailDetails.setSubject("Purchase Complete");
+        emailDetails.setMessageBody("Hi \n\n Your purchase of book "+bookName+" has been completed \n\n Thanks, \n Book Ease Team");
+        String res = emailService.sendSimpleEmail(emailDetails);
+
+        return ResponseEntity.ok(res);
     }
 }
