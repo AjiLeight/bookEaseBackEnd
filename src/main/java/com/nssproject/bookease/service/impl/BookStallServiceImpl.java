@@ -65,4 +65,9 @@ public class BookStallServiceImpl implements BookStallService {
     public BookStall getStallByEmail(String email) {
         return bookStallRepository.findByEmail(email);
     }
+
+    @Override
+    public List<BookStall> getByDistrict(String district) {
+        return bookStallRepository.findByDistrict(district);
+    }
 }

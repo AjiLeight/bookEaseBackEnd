@@ -9,4 +9,5 @@ public interface BookStallService {
     List<BookStall> getStallByBook(Long bookId);
     List<BookStall> getStallByDistrictAndBook(Long bookId, String District);
     BookStall getStallByEmail(String email);
+    List<BookStall> getByDistrict(String district);
 }

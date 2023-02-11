@@ -8,5 +8,6 @@ import java.util.List;
 public interface BookStallRepository extends JpaRepository<BookStall, Long> {
     List<BookStall> findByNameContains(String name);
     BookStall findByEmail(String email);
+    List<BookStall> findByDistrict(String district);
 
 }
