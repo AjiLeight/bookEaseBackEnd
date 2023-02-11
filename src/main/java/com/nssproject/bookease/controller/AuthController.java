@@ -8,11 +8,9 @@ import com.nssproject.bookease.entity.BookStall;
 import com.nssproject.bookease.entity.Customer;
 import com.nssproject.bookease.entity.Role;
 import com.nssproject.bookease.entity.UserEntity;
-import com.nssproject.bookease.repository.BookStallRepository;
-import com.nssproject.bookease.repository.CustomerRepository;
-import com.nssproject.bookease.repository.RoleRepository;
-import com.nssproject.bookease.repository.UserRepository;
+import com.nssproject.bookease.repository.*;
 import com.nssproject.bookease.security.JwtGenerator;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +27,14 @@ import java.util.Collections;
 @RequestMapping("/api/auth")
 @CrossOrigin
 public class AuthController {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
-    private AuthenticationManager authenticationManager;
-    private JwtGenerator jwtGenerator;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtGenerator jwtGenerator;
     private final CustomerRepository customerRepository;
     private final BookStallRepository bookStallRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
     public AuthController(UserRepository userRepository,
@@ -44,7 +43,8 @@ public class AuthController {
                           AuthenticationManager authenticationManager,
                           JwtGenerator jwtGenerator,
                           CustomerRepository customerRepository,
-                          BookStallRepository bookStallRepository) {
+                          BookStallRepository bookStallRepository,
+                          UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -52,6 +52,7 @@ public class AuthController {
         this.jwtGenerator = jwtGenerator;
         this.customerRepository = customerRepository;
         this.bookStallRepository = bookStallRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
 
@@ -137,7 +138,14 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
 
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+        UserEntity user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow();
+        Long userId = user.getId();
+        System.out.println(userId);
+        Long roleId = userRoleRepository.findById(userId).orElseThrow().getRole_id();
+        String role = roleRepository.findById(roleId).orElseThrow().getName();
+
+
+        return new ResponseEntity<>(new AuthResponseDto(token, role), HttpStatus.OK);
     }
 
 }

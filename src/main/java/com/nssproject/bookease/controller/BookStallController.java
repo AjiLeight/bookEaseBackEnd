@@ -39,7 +39,12 @@ public class BookStallController {
     }
 
     @GetMapping("{email}")
-    public ResponseEntity<BookStall> listBookByEmail(@PathVariable String email){
+    public ResponseEntity<BookStall> listBookStallByEmail(@PathVariable String email){
         return new ResponseEntity<>(bookStallService.getStallByEmail(email), HttpStatus.OK);
+    }
+
+    @GetMapping("/district/{district}")
+    public ResponseEntity<List<BookStall>> listBookStallByDistrict(@PathVariable String district){
+        return new ResponseEntity<>(bookStallService.getByDistrict(district), HttpStatus.OK);
     }
 }
