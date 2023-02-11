@@ -15,4 +15,5 @@ public interface ReservationService {
 
     void deleteReservation(ReservationDto reservationDto);
     void completeReservation(ReservationDto reservationDto);
+    void reservationReminder();
 }
