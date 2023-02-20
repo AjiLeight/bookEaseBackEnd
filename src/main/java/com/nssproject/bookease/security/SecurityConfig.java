@@ -36,9 +36,10 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).disable()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .httpBasic();
+        http.cors();
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
 
